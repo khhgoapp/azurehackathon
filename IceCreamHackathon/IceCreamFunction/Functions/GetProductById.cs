@@ -1,32 +1,22 @@
-﻿using System.Net;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
 
 namespace IceCreamFunction.Functions
 {
     public static class GetProductById
     {
-        [Function("GetProductById")]
-        public static HttpResponseData Run(
+        [FunctionName("GetProductById")]
+        public static IActionResult Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
                 "get",
                 Route = "GetProductById/{productId}")]
-            HttpRequestData req,
-            string productId,
-            FunctionContext executionContext)
+            HttpRequest req,
+            string productId)
         {
-            var logger = executionContext.GetLogger("GetProductById");
-            logger.LogInformation("C# HTTP trigger function processed a request.");
-
-            var response = req.CreateResponse(HttpStatusCode.OK);
-            
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-
-            response.WriteString($"The product name for your product id {productId} is Starfruit Explosion");
-
-            return response;
+            return new OkObjectResult($"The product name for your product id {productId} is Starfruit Explosion");
         }
     }
 }
