@@ -8,22 +8,25 @@ namespace IceCreamFunction.Functions
     public static class GetProductById
     {
         [Function("GetProductById")]
-        public static HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req, FunctionContext executionContext)
+        public static HttpResponseData Run(
+            [HttpTrigger(
+                AuthorizationLevel.Anonymous,
+                "get",
+                Route = "GetProductById/{productId}")]
+            HttpRequestData req,
+            string productId,
+            FunctionContext executionContext)
         {
-            var query = System.Web.HttpUtility.ParseQueryString(req.Url.Query);
-            
-            
-            
             var logger = executionContext.GetLogger("GetProductById");
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
             var response = req.CreateResponse(HttpStatusCode.OK);
+            
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-            response.WriteString("Welcome to Azure Functions!");
+            response.WriteString($"The product name for your product id {productId} is Starfruit Explosion");
 
             return response;
-            
         }
     }
 }
