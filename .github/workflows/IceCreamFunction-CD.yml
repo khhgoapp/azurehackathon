@@ -1,17 +1,17 @@
-name: VSFunctionTemplate CD/CD
+name: IceCreamFunctions CD/CD
 on:
   push:
     branches:
     - main
     paths:
-    - 'IceCreamHackathon/VSFunctionTemplate/**'
-
+    - 'IceCreamHackathon/IceCreamFunction/**'
+  
 env:
-  AZURE_FUNCTIONAPP_NAME: VSFunctionTemplate20211116141117
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: VSFunctionTemplate/publish
+  AZURE_FUNCTIONAPP_NAME: func-icecream-tba
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: IceCreamFunctions/publish
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 6.0.x
-  WORKING_DIRECTORY: IceCreamHackathon/VSFunctionTemplate
+  WORKING_DIRECTORY: IceCreamHackathon/IceCreamFunction
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -35,5 +35,5 @@ jobs:
       uses: Azure/functions-action@v1
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        publish-profile: ${{ secrets.VSFunctionTemplate20211116141117_2771 }}
+        publish-profile: ${{ secrets.IceCreamFunction }}
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
