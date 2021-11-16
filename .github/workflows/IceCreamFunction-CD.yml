@@ -1,9 +1,10 @@
-name: IceCreamFunctions CD/CD
+name: IceCreamFunctions CI/CD
 on:
   push:
     branches:
     - main
     paths:
+    - 'IceCreamHackathon/IceCreamFunction/**'
     - 'IceCreamHackathon/IceCreamFunction/**'
   
 env:
