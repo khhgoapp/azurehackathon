@@ -35,5 +35,5 @@ jobs:
       uses: Azure/functions-action@v1
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        publish-profile: ${{ secrets.VSFunctionTemplate20211116141117_2771 }}
+        publish-profile: ${{ secrets.IceCreamFunction }}
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
