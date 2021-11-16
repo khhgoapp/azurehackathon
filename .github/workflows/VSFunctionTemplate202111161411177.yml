@@ -1,4 +1,4 @@
-name: VSFunctionTemplate CD/CD
+name: VSFunctionTemplate CI/CD
 on:
   push:
     branches:
