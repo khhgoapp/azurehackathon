@@ -16,5 +16,6 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <CopyToPublishDirectory>Never</CopyToPublishDirectory>
         </None>
+        <None Remove="Functions\host.json" />
     </ItemGroup>
 </Project>
