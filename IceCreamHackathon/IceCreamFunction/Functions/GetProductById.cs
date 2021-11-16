@@ -17,7 +17,7 @@ namespace IceCreamFunction.Functions
             HttpRequest req,
             Guid productId)
         {
-            return new OkObjectResult($"The product name for your product id {productId} is Starfruit Explosion.");
+            return new OkObjectResult($"The product name for your product id {productId} is Starfruit Explosion");
         }
     }
 }
