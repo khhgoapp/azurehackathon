@@ -3,13 +3,15 @@ on:
   push:
     branches:
     - main
+    paths:
+    - 'IceCreamHackathon/IceCreamFunctionJr/**'
   pull_request:
 env:
   AZURE_FUNCTIONAPP_NAME: func-icecream-jrj
   AZURE_FUNCTIONAPP_PACKAGE_PATH: IceCreamFunctionJr/publish
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 6.0.x
-  WORKING_DIRECTORY: IceCreamFunctionJr
+  WORKING_DIRECTORY: IceCreamHackathon/IceCreamFunctionJr
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
