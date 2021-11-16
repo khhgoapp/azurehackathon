@@ -4,14 +4,14 @@ on:
     branches:
     - main
     paths:
-    - 'IceCreamHackathon/IceCreamFunctions/**'
+    - 'IceCreamHackathon/IceCreamFunction/**'
   
 env:
   AZURE_FUNCTIONAPP_NAME: func-icecream-tba
   AZURE_FUNCTIONAPP_PACKAGE_PATH: IceCreamFunctions/publish
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 6.0.x
-  WORKING_DIRECTORY: IceCreamHackathon/IceCreamFunctions
+  WORKING_DIRECTORY: IceCreamHackathon/IceCreamFunction
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
