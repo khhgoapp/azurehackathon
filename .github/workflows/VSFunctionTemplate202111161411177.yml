@@ -4,7 +4,7 @@ on:
     branches:
     - main
     paths:
-    - 'VSFunctionTemplate/**'
+    - 'IceCreamHackathon/VSFunctionTemplate/**'
 
 env:
   AZURE_FUNCTIONAPP_NAME: VSFunctionTemplate20211116141117
