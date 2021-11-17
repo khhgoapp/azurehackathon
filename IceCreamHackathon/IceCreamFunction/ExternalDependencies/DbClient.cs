@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IceCreamFunction.Functions;
 using Microsoft.Azure.Cosmos;
@@ -33,6 +35,15 @@ namespace IceCreamFunction.ExternalDependencies
             var container = await GetContainerAsync();
 
             return await container.ReadItemAsync<UserRatingDto>(ratingId.ToString(), PartitionKey.None);
+        }
+        
+        public async Task<List<UserRatingDto>> GetUserRatings()
+        {
+            var container = await GetContainerAsync();
+
+            var iterator = container.GetItemLinqQueryable<UserRatingDto>(true);
+            
+            return iterator.ToList();
         }
 
         private async Task<Container> GetContainerAsync()
