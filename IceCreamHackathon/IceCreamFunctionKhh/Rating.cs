@@ -14,16 +14,16 @@ using Newtonsoft.Json;
 
 namespace VSFunctionTemplate
 {
-    public class HelloWorld
+    public class Rating
     {
-        private readonly ILogger<HelloWorld> _logger;
+        private readonly ILogger<Rating> _logger;
 
-        public HelloWorld(ILogger<HelloWorld> log)
+        public Rating(ILogger<Rating> log)
         {
             _logger = log;
         }
 
-        [FunctionName("HelloWorld")]
+        [FunctionName("Ratings")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
