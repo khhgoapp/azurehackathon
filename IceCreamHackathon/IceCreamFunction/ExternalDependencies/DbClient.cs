@@ -37,13 +37,13 @@ namespace IceCreamFunction.ExternalDependencies
             return await container.ReadItemAsync<UserRatingDto>(ratingId.ToString(), PartitionKey.None);
         }
         
-        public async Task<List<UserRatingDto>> GetUserRatings()
+        public async Task<List<UserRatingDto>> GetUserRatings(Guid userId)
         {
             var container = await GetContainerAsync();
 
             var iterator = container.GetItemLinqQueryable<UserRatingDto>(true);
-            
-            return iterator.ToList();
+
+            return iterator.Where(x => x.UserId == userId).ToList();
         }
 
         private async Task<Container> GetContainerAsync()

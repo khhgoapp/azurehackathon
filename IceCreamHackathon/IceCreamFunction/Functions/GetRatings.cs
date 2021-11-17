@@ -21,10 +21,12 @@ namespace IceCreamFunction.Functions
         public async Task<List<UserRatingDto>> Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
-                "get")]
-            HttpRequest req)
+                "get",
+                Route = "GetRatings/{userId:guid}")]
+            HttpRequest req,
+            Guid userId)
         {
-            var userRatings = await _dbClient.GetUserRatings();
+            var userRatings = await _dbClient.GetUserRatings(userId);
 
             return userRatings;
         }
