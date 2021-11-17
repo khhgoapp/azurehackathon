@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using IceCreamFunction.ExternalDependencies;
 using IceCreamFunction.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -26,17 +27,28 @@ namespace IceCreamFunction.Functions
                 Route = null)]
             CreateRatingRequest createRating)
         {
-            var user = await UserClient.GetUserAsync(createRating.UserId);
+            var user = await _userClient.GetUserAsync(createRating.UserId);
 
             if (user is null) return new BadRequestObjectResult("No user with the id provided was not found.");
             
-            var product = await ProductClient.GetProductAsync(createRating.ProductId);
+            var product = await _productClient.GetProductAsync(createRating.ProductId);
             
             if (product is null) return new BadRequestObjectResult("No product with the id provided was not found.");
+
+            if (createRating.Rating is < 0 or > 5) return new BadRequestObjectResult("Rating must be an integer between 0 and 5");
+
+            var result = new UserRatingDto(Guid.NewGuid(), createRating.UserId, createRating.ProductId, DateTime.UtcNow, createRating.LocationName, createRating.Rating, createRating.UserNotes);
             
-            
-            
-            return new OkObjectResult($"{createRating}");
+            return new OkObjectResult(result);
         }
     }
+
+    public record UserRatingDto(
+        Guid Id,
+        Guid UserId,
+        Guid ProductId,
+        DateTime Timestamp,
+        string LocationName,
+        int Rating,
+        string UserNotes);
 }

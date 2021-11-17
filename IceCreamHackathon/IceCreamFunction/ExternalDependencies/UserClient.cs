@@ -9,7 +9,7 @@ namespace IceCreamFunction.ExternalDependencies
     {
         private const string BaseUrl = "https://serverlessohuser.trafficmanager.net/api";
 
-        public static async Task<UserDto?> GetUserAsync(Guid userId)
+        public async Task<UserDto?> GetUserAsync(Guid userId)
         {
             var httpClient = HttpClientFactory.Create();
 

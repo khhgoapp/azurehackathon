@@ -9,7 +9,7 @@ namespace IceCreamFunction.ExternalDependencies
     {
         private const string BaseUrl = "https://serverlessohproduct.trafficmanager.net/api";
 
-        public static async Task<IEnumerable<ProductDto>> GetProductsAsync()
+        public async Task<IEnumerable<ProductDto>> GetProductsAsync()
         {
             var httpClient = HttpClientFactory.Create();
 
@@ -24,7 +24,7 @@ namespace IceCreamFunction.ExternalDependencies
             return result;
         }
 
-        public static async Task<ProductDto?> GetProductAsync(Guid productId)
+        public async Task<ProductDto?> GetProductAsync(Guid productId)
         {
             var httpClient = HttpClientFactory.Create();
 
