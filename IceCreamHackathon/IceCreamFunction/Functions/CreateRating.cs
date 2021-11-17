@@ -20,11 +20,12 @@ namespace IceCreamFunction.Functions
         
         [FunctionName("CreateRating")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(
-                AuthorizationLevel.Anonymous,
-                "post",
-                Route = null)]
-            CreateRatingRequest createRating)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] CreateRatingRequest createRating,
+            [CosmosDB(
+                databaseName: "ToDoItems",
+                containerName: "Items",
+                Connection = "CosmosDBConnection")]out dynamic document,
+            ILogger log))
         {
             var user = await UserClient.GetUserAsync(createRating.UserId);
 

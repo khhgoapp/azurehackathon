@@ -2,6 +2,8 @@ using System.Dynamic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using IceCreamFunctionKhh.ExternalDependencies;
+using IceCreamFunctionKhh.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -16,34 +18,52 @@ namespace VSFunctionTemplate
 {
     public class Rating
     {
+        private readonly ProductClient _productClient;
+        private readonly UserClient _userClient;
         private readonly ILogger<Rating> _logger;
 
-        public Rating(ILogger<Rating> log)
+        public Rating(ILogger<Rating> log, ProductClient productClient, UserClient userClient)
         {
             _logger = log;
+            _productClient = productClient;
+            _userClient = userClient;
         }
 
         [FunctionName("Ratings")]
-        [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
-        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-        [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req)
+        //[OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
+        //[OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
+        //[OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
+        //[OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
+        public IActionResult Run(
+            [HttpTrigger(
+                AuthorizationLevel.Anonymous,
+                "post",
+                Route = null)] CreateRatingRequest createRating,
+            [CosmosDB(
+                databaseName: "RatingsDBKHH",
+                collectionName: "Ratings",
+                ConnectionStringSetting = "AccountEndpoint=https://icecreamhold7.documents.azure.com:443/;AccountKey=P7GIegk8VwEsQrKd5oly1otVaJohskoXNHOqls62DTkzdMdfL3dC3rm1qJ89xCJYVjMLWcUPOsbiNUsDDhRlhQ==;")] out dynamic document)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            _logger.LogInformation("Create ratings HTTP trigger");
 
-            string name = req.Query["name"];
+            var user = UserClient.GetUserAsync(createRating.UserId).Result;
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            if (user is null)
+            {
+                document = null;
+                return new BadRequestObjectResult($"No user with the id: {createRating.UserId} was found.");
+            }
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. Greetings from Kim Højgaard-Hansen. This HTTP triggered function executed successfully.";
+            var product = ProductClient.GetProductAsync(createRating.ProductId).Result;
 
-            return new OkObjectResult(responseMessage);
+            if (product is null)
+            {
+                document = null;
+                return new BadRequestObjectResult($"No product with the id: {createRating.ProductId} provided was found.");
+            }
+
+            document = createRating;
+            return new OkObjectResult($"Rating: {createRating.id} created");
         }
     }
 }
