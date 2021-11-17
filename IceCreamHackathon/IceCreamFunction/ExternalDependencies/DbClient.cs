@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using IceCreamFunction.Functions;
 using Microsoft.Azure.Cosmos;
 
@@ -22,27 +23,34 @@ namespace IceCreamFunction.ExternalDependencies
 
         public async Task CreateUserRating(UserRatingDto userRatingDto)
         {
-            var container = await GetContainer();
+            var container = await GetContainerAsync();
 
             await container.CreateItemAsync(userRatingDto);
         }
-
-        private async Task<Container> GetContainer()
+        
+        public async Task<UserRatingDto> GetUserRating(Guid ratingId)
         {
-            var databaseResponse = await EnsureDatabaseExistence();
-            var containerResponse = await EnsureContainerExistence(databaseResponse);
+            var container = await GetContainerAsync();
+
+            return await container.ReadItemAsync<UserRatingDto>(ratingId.ToString(), PartitionKey.None);
+        }
+
+        private async Task<Container> GetContainerAsync()
+        {
+            var databaseResponse = await EnsureDatabaseExistenceAsync();
+            var containerResponse = await EnsureContainerExistenceAsync(databaseResponse);
 
             return containerResponse.Container;
         }
 
-        private async Task<ContainerResponse> EnsureContainerExistence(DatabaseResponse databaseResponse)
+        private async Task<ContainerResponse> EnsureContainerExistenceAsync(DatabaseResponse databaseResponse)
         {
             var containerResponse = await databaseResponse.Database.CreateContainerIfNotExistsAsync(new ContainerProperties("users", "/users"));
 
             return containerResponse;
         }
 
-        private async Task<DatabaseResponse> EnsureDatabaseExistence()
+        private async Task<DatabaseResponse> EnsureDatabaseExistenceAsync()
         {
             return await _client.CreateDatabaseIfNotExistsAsync("test12345");
         }

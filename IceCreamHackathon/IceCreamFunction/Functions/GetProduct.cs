@@ -6,14 +6,14 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 
 namespace IceCreamFunction.Functions
 {
-    public static class GetProductById
+    public static class GetProduct
     {
-        [FunctionName("GetProductById")]
+        [FunctionName("GetProduct")]
         public static IActionResult Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous,
                 "get",
-                Route = "GetProductById/{productId:guid}")]
+                Route = "GetProduct/{productId:guid}")]
             HttpRequest req,
             Guid productId)
         {
