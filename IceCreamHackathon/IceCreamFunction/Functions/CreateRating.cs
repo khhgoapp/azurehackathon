@@ -12,11 +12,13 @@ namespace IceCreamFunction.Functions
     {
         private readonly ProductClient _productClient;
         private readonly UserClient _userClient;
+        private readonly DbClient _dbClient;
 
-        public CreateRating(ProductClient productClient, UserClient userClient)
+        public CreateRating(ProductClient productClient, UserClient userClient, DbClient dbClient)
         {
             _productClient = productClient;
             _userClient = userClient;
+            _dbClient = dbClient;
         }
         
         [FunctionName("CreateRating")]
@@ -38,13 +40,15 @@ namespace IceCreamFunction.Functions
             if (createRating.Rating is < 0 or > 5) return new BadRequestObjectResult("Rating must be an integer between 0 and 5");
 
             var result = new UserRatingDto(Guid.NewGuid(), createRating.UserId, createRating.ProductId, DateTime.UtcNow, createRating.LocationName, createRating.Rating, createRating.UserNotes);
+
+            await _dbClient.CreateUserRating(result);
             
             return new OkObjectResult(result);
         }
     }
 
     public record UserRatingDto(
-        Guid Id,
+        Guid id,
         Guid UserId,
         Guid ProductId,
         DateTime Timestamp,

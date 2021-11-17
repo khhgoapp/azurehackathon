@@ -13,6 +13,7 @@ namespace IceCreamFunction
             builder.Services.AddHttpClient();
             builder.Services.AddScoped<ProductClient>();
             builder.Services.AddScoped<UserClient>();
+            builder.Services.AddScoped<DbClient>();
         }
     }
 }
