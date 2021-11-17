@@ -5,7 +5,12 @@ on:
     - main
     paths:
     - 'IceCreamHackathon/IceCreamFunctionJr/**'
+    - '.github/workflows/IceCreamFunctionJr.yml'
   pull_request:
+    paths:
+    - 'IceCreamHackathon/IceCreamFunctionJr/**'
+    - '.github/workflows/IceCreamFunctionJr.yml'
+
 env:
   AZURE_FUNCTIONAPP_NAME: func-icecream-jrj
   AZURE_FUNCTIONAPP_PACKAGE_PATH: IceCreamFunctionJr/publish
