@@ -1,17 +1,22 @@
-name: VSFunctionTemplate CI/CD
+name: IceCreamFunctionKhh CI/CD
 on:
   push:
     branches:
     - main
     paths:
-    - 'IceCreamHackathon/VSFunctionTemplate/**'
+    - 'IceCreamHackathon/IceCreamFunctionKhh/**'
+    - '.github/workflows/IceCreamFunctionKhh.yml'
+  pull_request:
+    paths:
+    - 'IceCreamHackathon/IceCreamFunctionKhh/**'
+    - '.github/workflows/IceCreamFunctionKhh.yml'
 
 env:
-  AZURE_FUNCTIONAPP_NAME: VSFunctionTemplate20211116141117
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: VSFunctionTemplate/publish
+  AZURE_FUNCTIONAPP_NAME: IceCreamFunctionKhh
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: IceCreamFunctionKhh/publish
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 6.0.x
-  WORKING_DIRECTORY: IceCreamHackathon/VSFunctionTemplate
+  WORKING_DIRECTORY: IceCreamHackathon/IceCreamFunctionKhh
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -35,5 +40,5 @@ jobs:
       uses: Azure/functions-action@v1
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        publish-profile: ${{ secrets.VSFunctionTemplate20211116141117_2771 }}
+        publish-profile: ${{ secrets.IceCreamFunctionKhh }}
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
