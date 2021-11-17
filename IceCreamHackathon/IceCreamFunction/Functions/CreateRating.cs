@@ -48,7 +48,7 @@ namespace IceCreamFunction.Functions
     }
 
     public record UserRatingDto(
-        Guid id,
+        Guid Id,
         Guid UserId,
         Guid ProductId,
         DateTime Timestamp,

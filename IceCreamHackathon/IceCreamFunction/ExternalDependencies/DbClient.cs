@@ -12,7 +12,11 @@ namespace IceCreamFunction.ExternalDependencies
         {
             _client = new CosmosClient("AccountEndpoint=https://icecreamhold7.documents.azure.com:443/;AccountKey=P7GIegk8VwEsQrKd5oly1otVaJohskoXNHOqls62DTkzdMdfL3dC3rm1qJ89xCJYVjMLWcUPOsbiNUsDDhRlhQ==;", new CosmosClientOptions
             {
-                ApplicationName = "IceCreamFunction"
+                ApplicationName = "IceCreamFunction",
+                SerializerOptions = new CosmosSerializationOptions
+                {
+                    PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                }
             });
         }
 
