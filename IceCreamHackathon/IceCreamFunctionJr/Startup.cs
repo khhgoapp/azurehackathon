@@ -1,5 +1,4 @@
 ﻿using IceCreamFunctionJr;
-using IceCreamFunctionJr.ExternalDependencies;
 using IceCreamFunctionJr.ExternalDependencies.Products;
 using IceCreamFunctionJr.ExternalDependencies.Users;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;

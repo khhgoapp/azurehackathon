@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using IceCreamFunctionJr.ExternalDependencies.Products;
 using IceCreamFunctionJr.ExternalDependencies.Users;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace IceCreamFunctionJr.AzureFunctions
 {
@@ -36,42 +34,22 @@ namespace IceCreamFunctionJr.AzureFunctions
         
         [FunctionName(nameof(CreateRating))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post")] CreateRatingRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             
-            var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-
-            if (!Guid.TryParse(GetParameter("userId", req, data), out Guid userId))
-                return new BadRequestObjectResult($"{nameof(userId)} parameter is missing or not a valid GUID.");
-
-            var (userResponseStatusMsg, user) = await _userClient.GetUserAsync(userId);
+            var (userResponseStatusMsg, user) = await _userClient.GetUserAsync(req.UserId);
             if (userResponseStatusMsg != null)
                 return new BadRequestObjectResult(userResponseStatusMsg);
             
-            if (!Guid.TryParse(GetParameter("productId", req, data), out Guid productId))
-                return new BadRequestObjectResult($"{nameof(productId)} parameter is missing or not a valid GUID.");
-            
-            var (productResponseStatusMsg, product) = await _productClient.GetProductAsync(productId);
+            var (productResponseStatusMsg, product) = await _productClient.GetProductAsync(req.ProductId);
             if (productResponseStatusMsg != null)
                 return new BadRequestObjectResult(productResponseStatusMsg);
 
-            var locationName = GetParameter("locationName", req, data);
-            if (string.IsNullOrWhiteSpace(locationName))
-                return new BadRequestObjectResult($"{nameof(locationName)} parameter is missing or not a valid GUID.");
-            
-            if (!int.TryParse(GetParameter("rating", req, data), out int rating))
-                return new BadRequestObjectResult($"{nameof(rating)} parameter is missing or not a valid GUID.");
-            
-            if (rating is < 0 or > 5) 
+            if (req.Rating is < 0 or > 5) 
                 return new BadRequestObjectResult("Rating must be an integer between 0 and 5");
             
-            var userNotes = GetParameter("userNotes", req, data);
-            if (string.IsNullOrWhiteSpace(userNotes))
-                return new BadRequestObjectResult($"{nameof(userNotes)} parameter is missing or not a valid GUID.");
-            
-            var result = new UserRatingDto(Guid.NewGuid(), userId, productId, DateTime.UtcNow, locationName, rating, userNotes);
+            var result = new UserRatingDto(Guid.NewGuid(), req.UserId, req.ProductId, DateTime.UtcNow, req.LocationName, req.Rating, req.UserNotes);
             return new OkObjectResult(result);
         }
         
