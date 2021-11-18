@@ -23,11 +23,7 @@ namespace IceCreamFunction.Functions
         
         [FunctionName("CreateRating")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(
-                AuthorizationLevel.Anonymous,
-                "post",
-                Route = null)]
-            CreateRatingRequest createRating)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] CreateRatingRequest createRating)
         {
             var user = await _userClient.GetUserAsync(createRating.UserId);
 
