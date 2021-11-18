@@ -5,7 +5,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace IceCreamFunctionJr.AzureFunctions
+namespace IceCreamFunctionJr.AzureFunctions.Products
 {
     public class GetProductName
     {

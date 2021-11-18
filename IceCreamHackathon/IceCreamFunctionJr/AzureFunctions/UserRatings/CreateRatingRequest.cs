@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IceCreamFunctionJr.AzureFunctions
+namespace IceCreamFunctionJr.AzureFunctions.UserRatings
 {
     public record CreateRatingRequest(
         Guid UserId,

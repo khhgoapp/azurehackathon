@@ -1,5 +1,6 @@
 ﻿using IceCreamFunctionJr;
 using IceCreamFunctionJr.ExternalDependencies.Products;
+using IceCreamFunctionJr.ExternalDependencies.UserRatings;
 using IceCreamFunctionJr.ExternalDependencies.Users;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ namespace IceCreamFunctionJr
             builder.Services.AddHttpClient();
             builder.Services.AddScoped<ProductClient>();
             builder.Services.AddScoped<UserClient>();
+            builder.Services.AddScoped<UserRatingsClient>();
         }
     }
 }
